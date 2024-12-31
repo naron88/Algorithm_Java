@@ -1,0 +1,43 @@
+import java.util.Scanner;
+
+public class 구간_합_구하기 {
+    public static void main(String[] args) {
+        // 1번째 줄에는 숫자의 개수, 구간합을 해야하는 횟수
+        // 2번째 줄에는 N개의 수
+        // 3번째 줄부터는 구간합을 할 i, j가 주어짐
+        
+        int numCount; // 숫자의 개수
+        int frequency; // 구간합 횟수
+        
+        Scanner sc = new Scanner(System.in);
+
+        numCount = sc.nextInt();
+        frequency = sc.nextInt();
+
+        // 숫자의 개수만큼 배열 생성
+        int[] arr = new int[numCount+1];
+        // 숫자 받기
+        for(int i = 1; i <= numCount; i++){
+            arr[i] = sc.nextInt();
+        }
+
+        // 합 배열 만들기
+        int[] sumArr = new int[numCount+1];
+        sumArr[1] = arr[1];
+        for(int i = 1; i <= numCount; i++){
+            sumArr[i] = sumArr[i-1] + arr[i];
+        }
+
+        // 구간합 횟수만큼 반복
+        for(int i = 0; i < frequency; i++) {
+            // 범위 받기
+            int iNum = sc.nextInt();
+            int jNum = sc.nextInt();
+
+            // 계산 및 출력
+            // 구간합 계산식
+            int result = sumArr[jNum] - sumArr[iNum - 1];
+            System.out.println(result);
+        }
+    }
+}
