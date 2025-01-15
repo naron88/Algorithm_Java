@@ -1,62 +1,60 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class No1253 {
-    public static void main(String[] args) throws IOException {
-        // '좋은 수'구하기
-        // 1253
+public class Main {
+    public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        // 수의 개수
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int numCount = Integer.parseInt(st.nextToken());
 
-        // 좋은 수의 개수
-        int count = 0;
+        // 수의 개수 N
+        int N = Integer.parseInt(st.nextToken());
 
-        // 배열 생성 및 저장
-        int[] arr = new int[numCount];
+        // N개의 수 입력받기
+        int[] arr = new int[N];
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < numCount; i++){
+        for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-        // 배열 정렬
+        
+        // 정렬
         Arrays.sort(arr);
 
-        // 투포인터를 사용해 해결
-        // 배열 모든 수에 대해 반복
-        for(int k = 0; k < numCount; k++){
-            // i, j 포인터를 사용
-            int i = 0;
-            int j = numCount-1;
-            int target = arr[k];
+        // 다른 두개의 수의 합이 어떤 수를 나타낼 수 있으면 count++
+        // 1번 index ~ N-1번 index까지 반복
+        int count = 0;
+        for (int i = 0; i < N; i++) {
+            // 투포인터 사용 해서 계산
+            int startPoint = 0;
+            int endPoint = N-1;
+            int target = arr[i];
 
-            // 포인터가 만날 때까지 반복
-            while(i < j){
-                if(arr[i] + arr[j] == target){
-                    // arr의 값이 k와 같지 않아야 좋은 수
-                    if(i != k && j != k){
+            while (startPoint < endPoint){
+                int sum = arr[startPoint] + arr[endPoint];
+
+                // 투포인터 합이 같으면
+                if (sum == target){
+                    if(startPoint != i && endPoint != i){
+                        // 두 포인터 모두 타겟 수와 다르면 count++, break;
                         count++;
                         break;
+                    } else if (endPoint == i) {
+                        // endPoint 가 타겟이랑 같으면 --;
+                        endPoint--;
+                    } else {
+                        // startPoint가 같으면 ++;
+                        startPoint++;
                     }
-                    else if(i == k){
-                        i++;
-                    }
-                    else if(j == k){
-                        j--;
-                    }
-                }
-                else if(arr[i] + arr[j] < target){
-                    i++;
-                }
-                else{
-                    j--;
+                }else if(sum > target){
+                    // 합이 더 크면 endPoint--;
+                    endPoint--;
+                }else{
+                    // 작으면 startPoint++;
+                    startPoint++;
                 }
             }
         }
-        bw.write(count+"\n");
+        bw.write(count+ "\n");
         bw.flush();
         bw.close();
     }
